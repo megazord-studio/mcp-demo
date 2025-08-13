@@ -9,10 +9,7 @@ import { NextRequest } from 'next/server';
 
 // Simple runtime config via env
 const MODEL = process.env.OPENAI_MODEL || 'gpt-4o-mini';
-const MCP_SSE_URL = process.env.MCP_SSE_URL; // e.g. http://localhost:3001/sse
-const MCP_HEADERS = process.env.MCP_SSE_HEADERS
-	? JSON.parse(process.env.MCP_SSE_HEADERS)
-	: undefined;
+const MCP_SSE_URL = process.env.MCP_SSE_URL; // e.g. http://localhost:3000/api/mcp
 
 export const runtime = 'edge'; // fast streaming
 // Allow streaming responses up to 30 seconds
@@ -31,18 +28,22 @@ export async function POST(req: NextRequest) {
 		ReturnType<typeof experimental_createMCPClient>
 	> | null = null;
 	try {
-		if (MCP_SSE_URL) {
-			mcpClient = await experimental_createMCPClient({
-				transport: {
-					type: 'sse',
-					url: MCP_SSE_URL,
-					headers: MCP_HEADERS,
-				},
-				onUncaughtError: (err: unknown) => {
-					console.error('MCP uncaught error', err);
-				},
-			});
-		}
+		// Build SSE URL: mcp-handler mounts at /api/mcp and exposes SSE at /api/mcp/sse
+		// We'll default to the base "/api/mcp" and append "/sse" if missing.
+		const origin = req.nextUrl.origin;
+		const mcpUrl = MCP_SSE_URL || `${origin}/api/mcp`;
+
+		console.log('[MCP] Using SSE URL:', mcpUrl);
+		mcpClient = await experimental_createMCPClient({
+			transport: {
+				type: 'sse',
+				url: mcpUrl,
+				//headers: MCP_HEADERS,
+			},
+			onUncaughtError: (err: unknown) => {
+				console.error('MCP uncaught error', err);
+			},
+		});
 
 		const tools = mcpClient ? await mcpClient.tools() : undefined;
 		const result = streamText({
