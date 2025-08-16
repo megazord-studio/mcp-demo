@@ -1,5 +1,4 @@
 import { sql } from '@/lib/db';
-import Link from 'next/link';
 
 type Row = {
 	id: number;
@@ -14,14 +13,8 @@ export default async function Home() {
 
 	return (
 		<div className="min-h-screen p-6 sm:p-10">
-			<header className="flex items-center justify-between mb-6">
+			<header className="mb-6">
 				<h1 className="text-2xl font-semibold">Attendees</h1>
-				<Link
-					href="/chat"
-					className="rounded-md border border-black/10 dark:border-white/20 px-4 py-2 text-sm hover:bg-black/5 dark:hover:bg-white/10"
-				>
-					Open Chat
-				</Link>
 			</header>
 
 			<div className="overflow-x-auto rounded-lg border border-black/10 dark:border-white/15 bg-white dark:bg-zinc-900">

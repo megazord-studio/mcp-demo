@@ -2,7 +2,6 @@
 
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport } from 'ai';
-import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 export default function ChatPage() {
@@ -28,41 +27,6 @@ export default function ChatPage() {
 
 	return (
 		<div className="min-h-screen flex flex-col">
-			<header className="sticky top-0 z-10 border-b border-black/10 dark:border-white/15 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-				<div className="mx-auto max-w-3xl px-4 py-3 flex items-center justify-between">
-					<h1 className="text-base font-medium">AI Chat</h1>
-					<div className="flex items-center gap-3">
-						<Link
-							href="/"
-							className="rounded-md border border-black/10 dark:border-white/20 px-3 py-1.5 text-xs hover:bg-black/5 dark:hover:bg-white/10"
-						>
-							Back to Attendees
-						</Link>
-						<div className="flex items-center gap-2 text-xs text-black/60 dark:text-white/60">
-							{status === 'ready' || status === 'error' ? (
-								<span className="inline-flex items-center gap-2">
-									<span
-										className={`h-2.5 w-2.5 rounded-full ${
-											status === 'ready' ? 'bg-green-500' : 'bg-red-500'
-										}`}
-										aria-label={status === 'ready' ? 'green' : 'red'}
-										title={status === 'ready' ? 'Ready' : 'Error'}
-									/>
-									<span className="sr-only">
-										{status === 'ready' ? 'green' : 'red'}
-									</span>
-								</span>
-							) : (
-								<>
-									{status === 'submitted' && 'Connecting…'}
-									{status === 'streaming' && 'Generating…'}
-								</>
-							)}
-						</div>
-					</div>
-				</div>
-			</header>
-
 			<main className="flex-1">
 				<div className="mx-auto max-w-3xl px-4 py-6">
 					<div
@@ -71,8 +35,8 @@ export default function ChatPage() {
 					>
 						{messages.length === 0 && (
 							<div className="h-full flex items-center justify-center text-center text-sm text-black/60 dark:text-white/60">
-								Ask anything, or try: &quot;Connect to MCP tool and run a
-								command&quot;
+								Ask anything. Tip: ask &quot;what tools do you have?&quot; to
+								list available tools.
 							</div>
 						)}
 
@@ -125,7 +89,7 @@ export default function ChatPage() {
 					)}
 
 					<form
-						className="mt-4 flex items-end gap-2"
+						className="mt-4 flex gap-2 items-center"
 						onSubmit={(e) => {
 							e.preventDefault();
 							const text = input.trim();
@@ -171,6 +135,27 @@ export default function ChatPage() {
 								Send
 							</button>
 						)}
+						<div className="flex items-center gap-2 text-xs text-black/60 dark:text-white/60">
+							{status === 'ready' || status === 'error' ? (
+								<span className="inline-flex items-center gap-2">
+									<span
+										className={`h-2.5 w-2.5 rounded-full ${
+											status === 'ready' ? 'bg-green-500' : 'bg-red-500'
+										}`}
+										aria-label={status === 'ready' ? 'green' : 'red'}
+										title={status === 'ready' ? 'Ready' : 'Error'}
+									/>
+									<span className="sr-only">
+										{status === 'ready' ? 'green' : 'red'}
+									</span>
+								</span>
+							) : (
+								<>
+									{status === 'submitted' && 'Connecting…'}
+									{status === 'streaming' && 'Generating…'}
+								</>
+							)}
+						</div>
 					</form>
 				</div>
 			</main>
