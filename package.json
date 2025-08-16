@@ -6,12 +6,17 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint"
+		"lint": "next lint",
+		"drizzle:generate": "drizzle-kit generate --config=drizzle.config.ts",
+		"drizzle:migrate": "drizzle-kit migrate --config=drizzle.config.ts",
+		"drizzle:studio": "drizzle-kit studio --config=drizzle.config.ts"
 	},
 	"dependencies": {
 		"@ai-sdk/openai": "^2.0.0",
 		"@ai-sdk/react": "^2.0.0",
+		"@neondatabase/serverless": "^1.0.1",
 		"ai": "^5.0.0",
+		"drizzle-orm": "^0.44.4",
 		"mcp-handler": "^1.0.1",
 		"next": "15.4.6",
 		"react": "19.1.0",
@@ -24,6 +29,8 @@
 		"@types/node": "^20",
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
+		"dotenv": "^17.2.1",
+		"drizzle-kit": "^0.31.4",
 		"eslint": "^9",
 		"eslint-config-next": "15.4.6",
 		"tailwindcss": "^4",
