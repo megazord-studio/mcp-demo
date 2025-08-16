@@ -9,7 +9,7 @@ import { NextRequest } from 'next/server';
 
 // Simple runtime config via env
 const MODEL = process.env.OPENAI_MODEL || 'gpt-4o-mini';
-const MCP_SSE_URL = process.env.MCP_SSE_URL; // e.g. http://localhost:3000/api/mcp
+const MCP_SSE_URL = process.env.MCP_SSE_URL; // e.g. http://localhost:3000/api/mcp or /api/mcp/sse
 
 export const runtime = 'edge'; // fast streaming
 // Allow streaming responses up to 30 seconds
@@ -28,10 +28,31 @@ export async function POST(req: NextRequest) {
 		ReturnType<typeof experimental_createMCPClient>
 	> | null = null;
 	try {
-		// Build SSE URL: mcp-handler mounts at /api/mcp and exposes SSE at /api/mcp/sse
-		// We'll default to the base "/api/mcp" and append "/sse" if missing.
+		// Build SSE URL: mcp-handler exposes SSE at /api/mcp/sse
+		// We'll default to the base "/api/mcp" and append "/sse" if it's missing.
 		const origin = req.nextUrl.origin;
-		const mcpUrl = MCP_SSE_URL || `${origin}/api/mcp`;
+		const configured = MCP_SSE_URL || `${origin}/api/mcp`;
+		// Normalize URL: ensure http for localhost/127.0.0.1 and append '/sse'
+		let mcpUrl: string;
+		try {
+			const u = new URL(configured);
+			if (
+				(u.hostname === 'localhost' || u.hostname === '127.0.0.1') &&
+				u.protocol === 'https:'
+			) {
+				u.protocol = 'http:';
+			}
+			if (!u.pathname.endsWith('/sse')) {
+				u.pathname = `${u.pathname.replace(/\/$/, '')}/sse`;
+			}
+			mcpUrl = u.toString();
+		} catch {
+			// Fallback if configured isn't absolute
+			const base = configured.endsWith('/sse')
+				? configured
+				: `${configured.replace(/\/$/, '')}/sse`;
+			mcpUrl = base;
+		}
 
 		console.log('[MCP] Using SSE URL:', mcpUrl);
 		mcpClient = await experimental_createMCPClient({

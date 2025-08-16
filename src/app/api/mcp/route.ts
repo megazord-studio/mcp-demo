@@ -1,6 +1,8 @@
 import { createMcpHandler } from 'mcp-handler';
 import { z } from 'zod';
 
+export const runtime = 'nodejs';
+
 const handler = createMcpHandler(
 	(server) => {
 		server.tool(
@@ -16,7 +18,10 @@ const handler = createMcpHandler(
 		);
 	},
 	{},
-	{ basePath: '/api' }
+	{
+		basePath: '/api/mcp',
+		redisUrl: process.env.REDIS_URL,
+	}
 );
 
 export { handler as DELETE, handler as GET, handler as POST };
