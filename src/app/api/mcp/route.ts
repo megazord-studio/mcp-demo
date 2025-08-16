@@ -155,6 +155,49 @@ const handler = createMcpHandler(
 				};
 			}
 		);
+
+		// Delete attendee by id
+		server.tool(
+			'attendees_delete_by_id',
+			'Delete an attendee by id and return the deleted row.',
+			{ id: z.number().int().positive() },
+			async ({ id }) => {
+				const rows =
+					(await sql`DELETE FROM attendees WHERE id = ${id} RETURNING id, first_name, last_name, nickname`) as unknown as Array<{
+						id: number;
+						first_name: string;
+						last_name: string;
+						nickname: string | null;
+					}>;
+
+				if (rows.length === 0) {
+					return {
+						content: [
+							{ type: 'text', text: `No attendee found with id '${id}'.` },
+						],
+					};
+				}
+
+				const r = rows[0];
+				return {
+					content: [
+						{
+							type: 'text',
+							text: JSON.stringify(
+								{
+									id: r.id,
+									firstName: r.first_name,
+									lastName: r.last_name,
+									nickname: r.nickname,
+								},
+								null,
+								2
+							),
+						},
+					],
+				};
+			}
+		);
 	},
 	{},
 	{
