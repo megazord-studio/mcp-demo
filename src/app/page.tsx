@@ -1,5 +1,9 @@
 import { sql } from '@/lib/db';
 
+// Disable caching for this route so the attendees table is always fresh
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 type Row = {
 	id: number;
 	first_name: string;
