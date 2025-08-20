@@ -2,6 +2,7 @@ import { openai } from '@ai-sdk/openai';
 import {
 	convertToModelMessages,
 	experimental_createMCPClient,
+	stepCountIs,
 	streamText,
 	UIMessage,
 } from 'ai';
@@ -71,6 +72,7 @@ export async function POST(req: NextRequest) {
 			model: openai(MODEL),
 			messages: convertToModelMessages(messages),
 			tools,
+			stopWhen: stepCountIs(2), // we just need a list and an action, 2 should be enough
 		});
 
 		// Respond using UI message stream protocol compatible with useChat
