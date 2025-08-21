@@ -19,7 +19,7 @@ const handler = createMcpHandler(
 		);
 		server.resource(
 			'initial-attendees',
-			'https://mcp-demo-seven.vercel.app/initial-attendees',
+			'https://mcp-demo-seven.vercel.app/initial-attendees.csv',
 			{
 				title: 'Initial Attendees CSV',
 				description: 'Initial attendees data, to seed the database',
