@@ -1,14 +1,13 @@
 {
 	"servers": {
 		"local-mcp": {
-			"url": "http://localhost:3000/api/mcp/",
-			//"url": "https://mcp-demo-seven.vercel.app/api/mcp",
-			"type": "sse"
-		},
-		"remote-mcp": {
-			"url": "https://mcp-demo-seven.vercel.app/api/mcp",
-			"type": "sse"
+			"url": "http://localhost:3000/api/mcp/sse",
+			"type": "http"
 		}
+		// "remote-mcp": {
+		// 	"url": "https://mcp-demo-seven.vercel.app/api/mcp/sse",
+		// 	"type": "http"
+		// }
 	},
 	"inputs": []
 }
