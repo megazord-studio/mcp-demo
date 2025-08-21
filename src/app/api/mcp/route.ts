@@ -21,15 +21,15 @@ const handler = createMcpHandler(
 			'initial-attendees',
 			'https://mcp-demo-seven.vercel.app/initial-attendees',
 			{
-				title: 'Initial Attendees',
+				title: 'Initial Attendees CSV',
 				description: 'Initial attendees data, to seed the database',
-				mimeType: 'application/json',
+				mimeType: 'text/csv',
 			},
 			async (uri) => ({
 				contents: [
 					{
 						uri: uri.href,
-						text: 'App configuration here',
+						text: 'Initial Attendees',
 					},
 				],
 			})
