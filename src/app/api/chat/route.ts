@@ -74,7 +74,6 @@ export async function POST(req: NextRequest) {
 			tools,
 			stopWhen: stepCountIs(2), // we just need a list and an action, 2 should be enough
 		});
-
 		// Respond using UI message stream protocol compatible with useChat
 		return result.toUIMessageStreamResponse();
 	} catch (e) {

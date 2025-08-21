@@ -17,23 +17,6 @@ const handler = createMcpHandler(
 				};
 			}
 		);
-		server.resource(
-			'initial-attendees',
-			'https://mcp-demo-seven.vercel.app/initial-attendees.csv',
-			{
-				title: 'Initial Attendees CSV',
-				description: 'Initial attendees data, to seed the database',
-				mimeType: 'text/csv',
-			},
-			async (uri) => ({
-				contents: [
-					{
-						uri: uri.href,
-						text: 'Initial Attendees',
-					},
-				],
-			})
-		);
 		// List all attendees
 		server.tool(
 			'attendees_list',
