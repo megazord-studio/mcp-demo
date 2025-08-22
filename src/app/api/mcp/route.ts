@@ -202,7 +202,32 @@ const handler = createMcpHandler(
 	{
 		basePath: '/api/mcp',
 		redisUrl: process.env.REDIS_URL,
+		maxDuration: 800,
 	}
 );
 
 export { handler as DELETE, handler as GET, handler as POST };
+
+// const verifyToken = async (req: Request, bearerToken?: string) => {
+// 	if (!bearerToken) return undefined;
+// 	console.log('Verifying token:', bearerToken);
+// 	const isValid = bearerToken === 'this-bearer-token-is-valid';
+// 	if (!isValid) return undefined;
+
+// 	return {
+// 		token: bearerToken,
+// 		scopes: ['read:stuff'],
+// 		clientId: 'user123',
+// 		extra: {
+// 			userId: '123',
+// 		},
+// 	};
+// };
+
+// const authHandler = withMcpAuth(handler, verifyToken, {
+// 	required: true,
+// 	requiredScopes: ['read:stuff'],
+// 	resourceMetadataPath: '/.well-known/oauth-protected-resource', // for our example we don't have an actual OAuth server, we just use a dummy bearer token
+// });
+
+// export { authHandler as DELETE, authHandler as GET, authHandler as POST };

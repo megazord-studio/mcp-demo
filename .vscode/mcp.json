@@ -3,6 +3,9 @@
 		"local-mcp": {
 			"url": "http://localhost:3000/api/mcp/sse",
 			"type": "http"
+			// "headers": {
+			// 	"Authorization": "Bearer this-bearer-token-is-valid"
+			// }
 		}
 		// "remote-mcp": {
 		// 	"url": "https://mcp-demo-seven.vercel.app/api/mcp/sse",

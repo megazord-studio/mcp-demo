@@ -8,13 +8,11 @@ import {
 } from 'ai';
 import { NextRequest } from 'next/server';
 
-// Simple runtime config via env
-const MODEL = process.env.OPENAI_MODEL || 'gpt-4o-mini';
-const MCP_SSE_URL = process.env.MCP_SSE_URL; // e.g. http://localhost:3000/api/mcp or /api/mcp/sse
+const MODEL = 'gpt-4o-mini';
 
 export const runtime = 'edge'; // fast streaming
-// Allow streaming responses up to 30 seconds
-export const maxDuration = 30;
+// Allow streaming responses up to 60 seconds
+export const maxDuration = 60;
 
 export async function POST(req: NextRequest) {
 	const body = await req.json().catch(() => ({}));
@@ -32,7 +30,7 @@ export async function POST(req: NextRequest) {
 		// Build SSE URL: mcp-handler exposes SSE at /api/mcp/sse
 		// We'll default to the base "/api/mcp" and append "/sse" if it's missing.
 		const origin = req.nextUrl.origin;
-		const configured = MCP_SSE_URL || `${origin}/api/mcp`;
+		const configured = `${origin}/api/mcp`;
 		// Normalize URL: ensure http for localhost/127.0.0.1 and append '/sse'
 		let mcpUrl: string;
 		try {
